@@ -1,5 +1,5 @@
 body {
-  background: #393e46;
+  background: #7d9d9c;
   font-family: 'Delius', cursive;
   margin: 0;
   padding: 0;
@@ -40,14 +40,14 @@ body {
   height: 100%;
   border-radius: 10px;
   transition: 0.6s;
-  background: #222831;
+  background: #576f72;
 }
 
 #app .playground .card .front {
   font-size: 50px;
   line-height: 120px;
   cursor: pointer;
-  color: #00adb5;
+  color: #e4dccf;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +98,7 @@ body {
 
 .congratz {
   position: fixed;
-  color: #fff;
+  color: #e4dccf;
   width: 100%;
   height: 100%;
   font-size: 3em;
@@ -168,11 +168,11 @@ body {
 }
 
 .header {
-  background-color: #00adb5;
+  background-color: #576f72;
   display: flex;
   justify-content: center;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .header h1,
@@ -180,7 +180,7 @@ h6,
 h3 {
   margin: 0 0 10px 0;
   padding: 0;
-  color: #eeeeee;
+  color: #e4dccf;
 }
 
 .header .btn-group {
@@ -192,19 +192,18 @@ h3 {
   padding: 5px 10px;
   border-radius: 20px;
   font-size: 14px;
-  border: none;
-  color: #222831;
-  border: solid #222831 2px;
+  color: #202a44;
+  border: solid #202a44 2px;
   text-decoration: none;
 }
 
 .btn-group .btn:hover {
-  background: #b3e0e2;
+  background: #00adb5;
 }
 
 .footer {
-  background-color: #00adb5;
-  color: #eeeeee;
+  background-color: #576f72;
+  color: #e4dccf;
   position: fixed;
   bottom: 0;
   z-index: 3;
