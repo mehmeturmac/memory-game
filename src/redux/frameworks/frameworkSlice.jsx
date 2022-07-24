@@ -24,7 +24,7 @@ const shuffle = (array) => {
 const items = shuffle([...newFrameworks, ...newFrameworks]).map((framework, i) => ({ id: i, name: framework, close: true, complete: false }));
 
 export const frameworkAdaptor = createEntityAdapter({ selectId: (e) => e.id });
-const emptyState = frameworkAdaptor.getInitialState({ loading: false, opened: [] });
+const emptyState = frameworkAdaptor.getInitialState({ loading: false, opened: [], score: difficulty * 20 });
 const initialState = frameworkAdaptor.upsertMany(emptyState, items);
 
 export const frameworkSelectors = frameworkAdaptor.getSelectors((state) => state.frameworks);
@@ -45,8 +45,11 @@ export const frameworkSlice = createSlice({
     toggleLoading: (state) => {
       state.loading = !state.loading;
     },
+    updateScore: (state, action) => {
+      state.score += action.payload;
+    },
   },
 });
 
-export const { addFramework, updateFramework, updateFrameworks, addOpened, clearOpened, toggleLoading } = frameworkSlice.actions;
+export const { addFramework, updateFramework, updateFrameworks, addOpened, clearOpened, toggleLoading, updateScore } = frameworkSlice.actions;
 export default frameworkSlice.reducer;

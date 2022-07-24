@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleLoading, updateFramework, clearOpened, frameworkSelectors } from '../redux/frameworks/frameworkSlice';
+import { toggleLoading, updateFramework, clearOpened, frameworkSelectors, updateScore } from '../redux/frameworks/frameworkSlice';
 import Card from './Card';
 
 function Container() {
@@ -18,10 +18,12 @@ function Container() {
           opened.forEach(({ id }) => {
             dispatch(updateFramework({ id, changes: { complete: true } }));
           });
+          dispatch(updateScore(+50));
         } else {
           opened.forEach(({ id }) => {
             dispatch(updateFramework({ id, changes: { close: true } }));
           });
+          dispatch(updateScore(-10));
         }
         dispatch(clearOpened());
         dispatch(toggleLoading());
