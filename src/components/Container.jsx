@@ -1,30 +1,49 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addFramework, updateFrameworks, frameworkSelectors } from '../redux/frameworks/frameworkSlice';
+import { toggleLoading, updateFramework, clearOpened, frameworkSelectors } from '../redux/frameworks/frameworkSlice';
 import Card from './Card';
 
 function Container() {
-  const data = useSelector(frameworkSelectors.selectAll);
-  const opened = data.filter((item) => !item.close);
+  const [isComplete, setIsComplete] = useState(false);
+  const items = useSelector(frameworkSelectors.selectAll);
+  const opened = useSelector((state) => state.frameworks.opened);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (opened.length == 2) {
+    if (opened.length === 2) {
+      dispatch(toggleLoading());
       setTimeout(() => {
-        dispatch(
-          updateFrameworks(
-            data.map((item) => {
-              return { id: item.id, changes: { close: true } };
-            })
-          )
-        );
-      }, 1000);
+        if (opened[0].name === opened[1].name) {
+          opened.forEach(({ id }) => {
+            dispatch(updateFramework({ id, changes: { complete: true } }));
+          });
+        } else {
+          opened.forEach(({ id }) => {
+            dispatch(updateFramework({ id, changes: { close: true } }));
+          });
+        }
+        dispatch(clearOpened());
+        dispatch(toggleLoading());
+      }, 500);
     }
-  }, [opened]);
+  }, [opened, dispatch]);
+
+  useEffect(() => {
+    const isComp = items.find((item) => item.complete === false);
+    !isComp ? setIsComplete(true) : setIsComplete(false);
+  }, [items]);
 
   return (
     <div className="playground">
-      {data.map((item, i) => (
+      {isComplete && (
+        <div className="congratz">
+          <button onClick={() => window.location.reload()}>Play Again</button>
+          <div className="flip-scale-up-ver">Congratz!</div>
+        </div>
+      )}
+
+      {items.map((item, i) => (
         <Card key={i} item={item} />
       ))}
     </div>

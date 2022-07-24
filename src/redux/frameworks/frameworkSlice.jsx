@@ -1,6 +1,10 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 
+const difficulty = localStorage.getItem('difficulty') || 10;
+
 const frameworks = ['angular2', 'vue', 'react', 'grunt', 'phantomjs', 'ember', 'babel', 'ionic', 'gulp', 'meteor', 'yeoman', 'yarn', 'nodejs', 'bower', 'browserify'];
+
+const newFrameworks = frameworks.slice(0, difficulty);
 
 const shuffle = (array) => {
   let currentIndex = array.length;
@@ -17,10 +21,11 @@ const shuffle = (array) => {
   return array;
 };
 
-const items = shuffle([...frameworks, ...frameworks]).map((framework, i) => ({ id: i, name: framework, close: true, complete: false, fail: false }));
+const items = shuffle([...newFrameworks, ...newFrameworks]).map((framework, i) => ({ id: i, name: framework, close: true, complete: false }));
 
 export const frameworkAdaptor = createEntityAdapter({ selectId: (e) => e.id });
-const initialState = frameworkAdaptor.upsertMany(frameworkAdaptor.getInitialState(), items);
+const emptyState = frameworkAdaptor.getInitialState({ loading: false, opened: [] });
+const initialState = frameworkAdaptor.upsertMany(emptyState, items);
 
 export const frameworkSelectors = frameworkAdaptor.getSelectors((state) => state.frameworks);
 
@@ -31,12 +36,17 @@ export const frameworkSlice = createSlice({
     addFramework: frameworkAdaptor.addOne,
     updateFramework: frameworkAdaptor.updateOne,
     updateFrameworks: frameworkAdaptor.updateMany,
-    updateScore: (state, action) => {
-      state.diff = action.payload;
-      state.score = state.score + state.diff;
+    addOpened: (state, action) => {
+      state.opened.push(action.payload);
+    },
+    clearOpened: (state) => {
+      state.opened = [];
+    },
+    toggleLoading: (state) => {
+      state.loading = !state.loading;
     },
   },
 });
 
-export const { addFramework, updateFramework, updateFrameworks } = frameworkSlice.actions;
+export const { addFramework, updateFramework, updateFrameworks, addOpened, clearOpened, toggleLoading } = frameworkSlice.actions;
 export default frameworkSlice.reducer;
